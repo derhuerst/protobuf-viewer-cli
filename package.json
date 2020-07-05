@@ -1,0 +1,43 @@
+{
+	"name": "protobuf-viewer-cli",
+	"description": "Inspect protocol buffers in the command line.",
+	"version": "1.0.0",
+	"bin": {
+		"protobuf-viewer": "./cli.js"
+	},
+	"main": "index.js",
+	"files": [
+		"cli.js",
+		"index.js",
+		"example.js"
+	],
+	"keywords": [
+		"protocol buffers",
+		"protobuf",
+		"pbf",
+		"cli",
+		"viewer",
+		"inspector"
+	],
+	"author": "Jannis R <mail@jannisr.de>",
+	"homepage": "https://github.com/derhuerst/protobuf-viewer-cli",
+	"repository": "derhuerst/protobuf-viewer-cli",
+	"bugs": "https://github.com/derhuerst/protobuf-viewer-cli/issues",
+	"license": "ISC",
+	"engines": {
+		"node": ">=10"
+	},
+	"dependencies": {
+		"mri": "^1.1.5"
+	},
+	"devDependencies": {
+		"eslint": "^7.3.0",
+		"tap-min": "^2.0.0",
+		"tape": "^5.0.0"
+	},
+	"scripts": {
+		"test": "env NODE_ENV=dev node test.js | tap-min",
+		"lint": "eslint .",
+		"prepublishOnly": "npm test && npm run lint"
+	}
+}
