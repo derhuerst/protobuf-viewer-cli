@@ -39,6 +39,6 @@ const showError = (err) => {
 		? await readFile(argv._[0])
 		: await asBuffer(process.stdin)
 
-	process.stdout.write(render(buf, annotate(buf)) + '\n')
+	process.stdout.write(render(buf, annotate(buf)))
 })()
 .catch(showError)

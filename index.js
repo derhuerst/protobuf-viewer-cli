@@ -13,43 +13,53 @@ const scan = function* (buf, offset = 0, end = buf.length) {
 		// https://developers.google.com/protocol-buffers/docs/encoding#structure
 		const keyPos = pbf.pos // position of the key
 		const val = pbf.readVarint()
+		const keyLength = pbf.pos - keyPos
 		const fieldNr = val >> 3 // cut last three bits
 		const wireType = val & 0x7 // only consider last three bits
-		const dataPos = pbf.pos // position of the data
 
+		let dataPos = pbf.pos // position of the data
 		if (wireType === Pbf.Varint) {
+			// eslint-disable-next-line no-empty
 			while (pbf.buf[pbf.pos++] > 0x7f) {}
 		} else if (wireType === Pbf.Bytes) {
-			pbf.pos = pbf.readVarint() + pbf.pos
+			const length = pbf.readVarint()
+			dataPos = pbf.pos
+			pbf.pos = length + pbf.pos
 		} else if (wireType === Pbf.Fixed32) {
 			pbf.pos += 4
 		} else if (wireType === Pbf.Fixed64) {
 			pbf.pos += 8;
 		} else {
 			const err = new Error(`unsupported wire type ${wireType} at byte ${keyPos}`)
+			err.code = 'UNSUPPORTED_WIRE_TYPE'
 			err.pos = keyPos
 			err.wireType = wireType
 			throw err
 		}
 
 		yield {
-			keyPos, fieldNr, wireType,
+			keyPos, keyLength,
+			fieldNr, wireType,
 			dataPos, dataLength: pbf.pos - dataPos,
 		}
 	}
 }
 
-const annotate = (buf, offset = 0, end = buf.length) => {
-	const ranges = []
-	for (const item of scan(buf, offset, end)) {
-		ranges.push([
-			item,
-			item.keyPos, // from
-			item.dataPos - item.keyPos + item.dataLength, // length
-		])
-	}
+const annotate = function* (buf, offset = 0, end = buf.length) {
+	for (let field of scan(buf, offset, end)) {
+		// parse nested messages
+		if (field.wireType == Pbf.Bytes) {
+			const end = field.dataPos + field.dataLength
+			try {
+				const nested = Array.from(annotate(buf, field.dataPos, end))
+				field = {...field, nested}
+			} catch (err) {
+				if (err.code !== 'UNSUPPORTED_WIRE_TYPE') throw err
+			}
+		}
 
-	return flattenRanges(ranges)
+		yield field
+	}
 }
 
 module.exports = annotate

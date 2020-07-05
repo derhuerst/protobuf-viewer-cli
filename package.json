@@ -29,6 +29,7 @@
 		"node": ">=10"
 	},
 	"dependencies": {
+		"chalk": "^4.1.0",
 		"flatten-overlapping-ranges": "^1.0.1",
 		"get-stream": "^5.1.0",
 		"mri": "^1.1.5",
