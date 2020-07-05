@@ -10,7 +10,8 @@
 		"cli.js",
 		"index.js",
 		"lib",
-		"example.js"
+		"example.sh",
+		"screenshot.png"
 	],
 	"keywords": [
 		"protocol buffers",
