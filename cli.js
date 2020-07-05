@@ -23,10 +23,22 @@ if (argv.version || argv.v) {
 	process.exit(0)
 }
 
+const {readFile} = require('fs')
+const {buffer: asBuffer} = require('get-stream')
+const annotate = require('.')
+const render = require('./lib/render')
+
 const showError = (err) => {
 	if (process.env.NODE_ENV === 'dev') console.error(err)
 	else console.error(err.message || (err + ''))
 	process.exit(1)
 }
 
-// todo
+;(async () => {
+	const buf = argv._[0]
+		? await readFile(argv._[0])
+		: await asBuffer(process.stdin)
+
+	process.stdout.write(render(buf, annotate(buf)) + '\n')
+})()
+.catch(showError)

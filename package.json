@@ -9,6 +9,7 @@
 	"files": [
 		"cli.js",
 		"index.js",
+		"lib",
 		"example.js"
 	],
 	"keywords": [
@@ -29,6 +30,7 @@
 	},
 	"dependencies": {
 		"flatten-overlapping-ranges": "^1.0.1",
+		"get-stream": "^5.1.0",
 		"mri": "^1.1.5",
 		"pbf": "^3.2.1"
 	},
