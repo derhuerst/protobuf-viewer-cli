@@ -28,7 +28,9 @@
 		"node": ">=10"
 	},
 	"dependencies": {
-		"mri": "^1.1.5"
+		"flatten-overlapping-ranges": "^1.0.1",
+		"mri": "^1.1.5",
+		"pbf": "^3.2.1"
 	},
 	"devDependencies": {
 		"eslint": "^7.3.0",
