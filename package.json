@@ -41,8 +41,9 @@
 		"tape": "^5.0.0"
 	},
 	"scripts": {
-		"test": "env NODE_ENV=dev node test.js | tap-min",
+		"build": "pbf test/Foo.proto >test/Foo.schema.js",
+		"test": "node test/index.js | tap-min",
 		"lint": "eslint .",
-		"prepublishOnly": "npm test && npm run lint"
+		"prepublishOnly": "npm run build && npm test && npm run lint"
 	}
 }

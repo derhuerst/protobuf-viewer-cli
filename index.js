@@ -62,4 +62,5 @@ const annotate = function* (buf, offset = 0, end = buf.length) {
 	}
 }
 
+annotate.scan = scan
 module.exports = annotate

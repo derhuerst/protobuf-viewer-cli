@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+message Foo {
+	int32 a = 1;
+	repeated Bar b = 17;
+	string d = 2;
+}
+
+message Bar {
+	string c = 3;
+}
